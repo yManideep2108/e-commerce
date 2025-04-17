@@ -4,7 +4,7 @@ import com.ecommerce.manideep.sb.ecom.payload.CategoryDTO;
 import com.ecommerce.manideep.sb.ecom.payload.CategoryResponse;
 
 public interface CategoryService {
-    CategoryResponse getAllCategories();
+    CategoryResponse getAllCategories(Integer pageNumber ,Integer pageSize);
     CategoryDTO createCategory(CategoryDTO categoryDTO);
 
     CategoryDTO deleteCategory(Long categoryId);
