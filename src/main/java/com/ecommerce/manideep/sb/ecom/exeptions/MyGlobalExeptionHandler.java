@@ -1,5 +1,6 @@
 package com.ecommerce.manideep.sb.ecom.exeptions;
 
+import com.ecommerce.manideep.sb.ecom.payload.APIResponseStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -25,14 +26,17 @@ public class MyGlobalExeptionHandler {
     }
 
     @ExceptionHandler(ResourseNotFoundExeption.class)
-    public ResponseEntity<String> myResourseNotFoundExeption(ResourseNotFoundExeption resourseNotFoundExeption){
-        String message = resourseNotFoundExeption.getMessage();
-        return new ResponseEntity<>(message,HttpStatus.NOT_FOUND);
+    public ResponseEntity<APIResponseStatus> myResourseNotFoundExeption(ResourseNotFoundExeption resourseNotFoundExeption){
+        APIResponseStatus apiResponseStatus = new APIResponseStatus();
+        apiResponseStatus.message =  resourseNotFoundExeption.getMessage();
+        apiResponseStatus.setStatus(false);
+        return new ResponseEntity<>(apiResponseStatus,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(APIExeption.class)
-    public ResponseEntity<String> myAPIExeption(APIExeption apiExeption){
-        String message = apiExeption.getMessage();
-        return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+    public ResponseEntity<APIResponseStatus> myAPIExeption(APIExeption apiExeption){
+        APIResponseStatus apiResponseStatus = new APIResponseStatus();
+        apiResponseStatus.message =  apiExeption.getMessage();
+        return new ResponseEntity<>(apiResponseStatus,HttpStatus.BAD_REQUEST);
     }
 }

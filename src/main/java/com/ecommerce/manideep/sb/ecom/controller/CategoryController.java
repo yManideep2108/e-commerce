@@ -1,5 +1,6 @@
 package com.ecommerce.manideep.sb.ecom.controller;
 
+import com.ecommerce.manideep.sb.ecom.config.AppConstants;
 import com.ecommerce.manideep.sb.ecom.payload.CategoryDTO;
 import com.ecommerce.manideep.sb.ecom.payload.CategoryResponse;
 import com.ecommerce.manideep.sb.ecom.service.CategoryService;
@@ -19,10 +20,12 @@ public class CategoryController {
 
     @GetMapping("/api/public/categories")
     public ResponseEntity <CategoryResponse> getCategories (
-            @RequestParam(name = "pageNumber") Integer pageNumber ,
-            @RequestParam(name = "pageSize") Integer pageSize
+            @RequestParam(name = "pageNumber" ,defaultValue = AppConstants.PAGE_NUMBER ,required = false) Integer pageNumber ,
+            @RequestParam(name = "pageSize",defaultValue = AppConstants.PAGE_SIZE , required = false) Integer pageSize,
+            @RequestParam(name = "sortBy",defaultValue = AppConstants.SORT_CATEGORIES_BY , required = false ) String sortBy,
+            @RequestParam(name = "sortOrder",defaultValue = AppConstants.SORT_DIRECTION , required = false ) String sortOrder
     ){
-        CategoryResponse categoryResponse = categoryService.getAllCategories(pageNumber ,pageSize);
+        CategoryResponse categoryResponse = categoryService.getAllCategories( pageNumber , pageSize ,sortBy , sortOrder );
         return new ResponseEntity<>(categoryResponse,HttpStatus.OK);
     }
     @PostMapping("/api/public/categories")
