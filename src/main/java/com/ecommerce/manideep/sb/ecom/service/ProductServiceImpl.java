@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService{
              .map(product -> modelMapper.map(product, ProductDTO.class))
              .collect(Collectors.toList());
      ProductRepsonse productRepsonse = new ProductRepsonse();
-     productRepsonse.setContent(productDTOList);git 
+     productRepsonse.setContent(productDTOList);
      productRepsonse.setPageNumber(pageNumber);
      productRepsonse.setPageSize(pageSize);
      productRepsonse.setTotalElements(pageProducts.getTotalElements());
