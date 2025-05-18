@@ -5,18 +5,15 @@ import com.ecommerce.manideep.sb.ecom.payload.CategoryDTO;
 import com.ecommerce.manideep.sb.ecom.payload.CategoryResponse;
 import com.ecommerce.manideep.sb.ecom.service.CategoryService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //https://github.com/yManideep2108/e-commerce.git
 @RestController
-
 public class CategoryController {
+    @Autowired
     CategoryService categoryService ;
-
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping("/api/public/categories")
     public ResponseEntity <CategoryResponse> getCategories (
