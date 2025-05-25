@@ -2,10 +2,13 @@ package com.ecommerce.manideep.sb.ecom.service;
 
 import com.ecommerce.manideep.sb.ecom.exeptions.APIExeption;
 import com.ecommerce.manideep.sb.ecom.exeptions.ResourseNotFoundExeption;
+import com.ecommerce.manideep.sb.ecom.model.Cart;
 import com.ecommerce.manideep.sb.ecom.model.Category;
 import com.ecommerce.manideep.sb.ecom.model.Product;
+import com.ecommerce.manideep.sb.ecom.payload.CartDTO;
 import com.ecommerce.manideep.sb.ecom.payload.ProductDTO;
 import com.ecommerce.manideep.sb.ecom.payload.ProductRepsonse;
+import com.ecommerce.manideep.sb.ecom.repositories.CartRepo;
 import com.ecommerce.manideep.sb.ecom.repositories.CategoryRepo;
 import com.ecommerce.manideep.sb.ecom.repositories.ProductRepo;
 import org.modelmapper.ModelMapper;
@@ -26,6 +29,12 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private CartRepo cartRepo;
 
     @Autowired
     private CategoryRepo categoryRepo;
@@ -163,6 +172,18 @@ public class ProductServiceImpl implements ProductService{
         productFromDb.setSpecialPrice(product.getSpecialPrice());
         Product savedProduct = productRepo.save(productFromDb);
 
+        List<Cart> carts = cartRepo.findCartByProductId(productId);
+
+        List<CartDTO> cartDTOS = carts.stream().map(item -> {
+            CartDTO cartDTO = modelMapper.map(item, CartDTO.class);
+            List<ProductDTO> products = item.getCartItems().stream().map(p ->
+                modelMapper.map(p.getProduct(),ProductDTO.class)
+            ).collect(Collectors.toList());
+            cartDTO.setProducts(products);
+            return cartDTO;
+        }).collect(Collectors.toList());
+
+        cartDTOS.forEach(cartDTO -> cartService.updateProductInCarts(cartDTO.getCartId(),productId));
         return modelMapper.map(savedProduct,ProductDTO.class);
     }
 
@@ -171,6 +192,8 @@ public class ProductServiceImpl implements ProductService{
         Product productFromDb = productRepo.findById(productId).orElseThrow(
                 ()->   new ResourseNotFoundExeption("product" ,"productId" ,productId)
         );
+        List<Cart> carts = cartRepo.findCartByProductId(productId);
+        carts.forEach(cart -> cartService.deleteProductFromCart(cart.getCartId(), productId));
        productRepo.delete(productFromDb);
        return modelMapper.map(productFromDb, ProductDTO.class);
 
