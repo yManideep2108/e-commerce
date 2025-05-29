@@ -14,5 +14,5 @@ public interface AddressService {
 
     List<AddressDTO> getAllAddressesOfUser(AppUser user);
 
-    AddressDTO updateUserAddressById(Long addressId, AddressDTO addressDTO);
+    AddressDTO updateUserAddressById(AppUser user ,Long addressId, AddressDTO addressDTO);
 }

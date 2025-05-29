@@ -70,7 +70,7 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public AddressDTO updateUserAddressById(Long addressId, AddressDTO addressDTO) {
+    public AddressDTO updateUserAddressById(AppUser user ,Long addressId, AddressDTO addressDTO) {
        Address addressFromDB = addressRepo.findById(addressId).orElseThrow(() ->
                new ResourseNotFoundExeption("Address","Address id " ,addressId));
 
@@ -84,7 +84,6 @@ public class AddressServiceImpl implements AddressService{
        addressFromDB.setStreet(addressDTO.getStreet());
 
        Address updatedAddress = addressRepo.save(addressFromDB);
-       AppUser user = addressFromDB.getUser();
        List<Address> addressInApp = user.getAddresses();
        log.debug("Address in application : {}",addressInApp);
        user.getAddresses().removeIf(addressInDB -> addressInDB.getAddressId().equals(addressId));
