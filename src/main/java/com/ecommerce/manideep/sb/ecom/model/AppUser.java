@@ -55,6 +55,7 @@ public class AppUser {
 
     @Getter
     @Setter
+    @ToString.Exclude
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE},orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 

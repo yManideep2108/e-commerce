@@ -40,6 +40,10 @@ public class Address {
     @Size(min = 5, message = "pincode must be atleast 5 characters")
     private String pincode ;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user ;
+
     public Address(String street, String buildingName, String city, String state, String country, String pincode) {
         this.street = street;
         this.buildingName = buildingName;
@@ -48,7 +52,6 @@ public class Address {
         this.country = country;
         this.pincode = pincode;
     }
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user ;
+
+
 }
